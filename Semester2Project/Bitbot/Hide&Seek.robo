@@ -1,0 +1,1072 @@
+<head><version>2.87.15</version></head>
+<zoom>8</zoom>
+<Comment>
+  <module_comment>~ JOYSTICK CONTROLS ~
+</module_comment>
+</Comment>
+<Joystick>
+  <comment>joy_x and joy_y to be used for speed and rotation
+</comment>
+  <button_1_map>lock</button_1_map>
+  <button_3_map>left_lock</button_3_map>
+  <button_4_map>right_lock</button_4_map>
+  <button_11_map>Eyes</button_11_map>
+  <joystick_device>5-Axis,12-Button with POV </joystick_device>
+  <joystick_x_map>joy_y</joystick_x_map>
+  <joystick_y_map>joy_x</joystick_y_map>
+</Joystick>
+<VBScript_Program>
+  <comment>Used to scale the joystick values to motor values, and set breaks to buttons for more control.</comment>
+  <auto_reload>FALSE</auto_reload>
+  <continue_on_errors>FALSE</continue_on_errors>
+  <script>' the programme translates the joystick range of -1000 - 1000 to 0 - 255
+
+' amount of y joystick determines speed 
+speed = 128 - CInt(((GetVariable("joy_y") * 128) / 1000))
+' amount of x joystick determines rotation
+turn = CInt(((GetVariable("joy_x") * 128) / 1000))
+
+' determine intermediate values
+mleft = speed + turn
+mright = speed - turn
+
+'ensure they are within the range 88/90 - 168/170
+if mleft&lt;40 then mleft=40
+if mright&lt;40 then mright=40 
+if mleft&gt;165 then mleft=165
+if mright&gt;165 then mright=165
+
+
+Lock = GetVariable("lock")
+LeftLock = GetVariable("left_lock") 
+RightLock = GetVariable("right_lock")
+
+if (Lock = 1) then mleft = 126
+if (Lock = 1) then mright = 132
+if (LeftLock = 1) then mleft = 126
+if (RightLock = 1) then mright = 132
+
+SetVariable "lock", Lock
+SetVariable "left_lock", LeftLock
+SetVariable "right_lock", RightLock
+
+' finally set the variables to be used in the joystick module
+SetVariable "left_motor", mleft
+SetVariable "right_motor", mright
+
+
+</script>
+  <source_mode>gui</source_mode>
+</VBScript_Program>
+<Display_Variables>
+  <border_color>white</border_color>
+  <dim_background>TRUE</dim_background>
+  <display_as_annotation>FALSE</display_as_annotation>
+  <display_value_only>FALSE</display_value_only>
+  <font_color>white</font_color>
+  <font_size>Huge (24pt)</font_size>
+  <north>Eyes
+</north>
+  <northeast>right_lock
+right_motor
+</northeast>
+  <northwest>left_motor
+left_lock
+</northwest>
+</Display_Variables>
+<Comment>
+  <module_comment>-----------------------------------------------------------------------------------------------------------------------</module_comment>
+</Comment>
+<Comment>
+  <comment>Locate the bot by the arrow colour - green in this case.
+
+</comment>
+  <module_comment>~  HIDE &amp; SEEK ~
+</module_comment>
+</Comment>
+<Comment>
+  <module_comment>.................................</module_comment>
+</Comment>
+<Button_Interface>
+  <comment>RUN | RESET</comment>
+  <1_clear_on_release>TRUE</1_clear_on_release>
+  <1_color>#00FF00</1_color>
+  <1_height>58</1_height>
+  <1_is_bold>TRUE</1_is_bold>
+  <1_is_toggle>TRUE</1_is_toggle>
+  <1_name>RUN</1_name>
+  <1_text_color>#000000</1_text_color>
+  <1_variable_name>INTERFACE_RUN</1_variable_name>
+  <1_variable_value>1</1_variable_value>
+  <1_width>94</1_width>
+  <1_x_position>37</1_x_position>
+  <1_y_position>33</1_y_position>
+  <2_clear_on_release>TRUE</2_clear_on_release>
+  <2_color>#FFFFFF</2_color>
+  <2_height>58</2_height>
+  <2_is_bold>TRUE</2_is_bold>
+  <2_is_toggle>FALSE</2_is_toggle>
+  <2_name>RESET</2_name>
+  <2_text_color>#000000</2_text_color>
+  <2_variable_name>INTERFACE_RESET</2_variable_name>
+  <2_variable_value>1</2_variable_value>
+  <2_width>94</2_width>
+  <2_x_position>150</2_x_position>
+  <2_y_position>33</2_y_position>
+  <3_clear_on_release>TRUE</3_clear_on_release>
+  <3_color>#FF0000</3_color>
+  <3_height>46</3_height>
+  <3_is_bold>TRUE</3_is_bold>
+  <3_is_toggle>FALSE</3_is_toggle>
+  <3_text_color>#000000</3_text_color>
+  <3_variable_name>INTERFACE_STOP</3_variable_name>
+  <3_variable_value>1</3_variable_value>
+  <3_width>90</3_width>
+  <3_x_position>224</3_x_position>
+  <3_y_position>47</3_y_position>
+  <4_clear_on_release>TRUE</4_clear_on_release>
+  <4_color>#D4D0C8</4_color>
+  <4_height>23</4_height>
+  <4_is_bold>TRUE</4_is_bold>
+  <4_is_toggle>FALSE</4_is_toggle>
+  <4_text_color>#000000</4_text_color>
+  <4_variable_value>1</4_variable_value>
+  <4_width>75</4_width>
+  <4_x_position>53</4_x_position>
+  <4_y_position>99</4_y_position>
+  <5_clear_on_release>TRUE</5_clear_on_release>
+  <5_color>#D4D0C8</5_color>
+  <5_height>23</5_height>
+  <5_is_bold>TRUE</5_is_bold>
+  <5_is_toggle>FALSE</5_is_toggle>
+  <5_text_color>#000000</5_text_color>
+  <5_variable_value>1</5_variable_value>
+  <5_width>75</5_width>
+  <5_x_position>134</5_x_position>
+  <5_y_position>99</5_y_position>
+  <6_clear_on_release>TRUE</6_clear_on_release>
+  <6_color>#D4D0C8</6_color>
+  <6_height>23</6_height>
+  <6_is_bold>TRUE</6_is_bold>
+  <6_is_toggle>FALSE</6_is_toggle>
+  <6_text_color>#000000</6_text_color>
+  <6_variable_value>1</6_variable_value>
+  <6_width>75</6_width>
+  <6_x_position>216</6_x_position>
+  <6_y_position>99</6_y_position>
+  <7_clear_on_release>TRUE</7_clear_on_release>
+  <7_color>#D4D0C8</7_color>
+  <7_height>23</7_height>
+  <7_is_bold>TRUE</7_is_bold>
+  <7_is_toggle>FALSE</7_is_toggle>
+  <7_text_color>#000000</7_text_color>
+  <7_variable_value>1</7_variable_value>
+  <7_width>75</7_width>
+  <7_x_position>83</7_x_position>
+  <7_y_position>18</7_y_position>
+  <8_clear_on_release>TRUE</8_clear_on_release>
+  <8_color>#D4D0C8</8_color>
+  <8_height>23</8_height>
+  <8_is_bold>TRUE</8_is_bold>
+  <8_is_toggle>FALSE</8_is_toggle>
+  <8_text_color>#000000</8_text_color>
+  <8_variable_value>1</8_variable_value>
+  <8_width>75</8_width>
+  <8_x_position>165</8_x_position>
+  <8_y_position>18</8_y_position>
+  <9_clear_on_release>FALSE</9_clear_on_release>
+  <9_color>#000000</9_color>
+  <9_is_bold>FALSE</9_is_bold>
+  <9_is_toggle>FALSE</9_is_toggle>
+  <9_text_color>#000000</9_text_color>
+  <10_clear_on_release>FALSE</10_clear_on_release>
+  <10_color>#000000</10_color>
+  <10_is_bold>FALSE</10_is_bold>
+  <10_is_toggle>FALSE</10_is_toggle>
+  <10_text_color>#000000</10_text_color>
+  <11_clear_on_release>FALSE</11_clear_on_release>
+  <11_color>#000000</11_color>
+  <11_is_bold>FALSE</11_is_bold>
+  <11_is_toggle>FALSE</11_is_toggle>
+  <11_text_color>#000000</11_text_color>
+  <12_clear_on_release>FALSE</12_clear_on_release>
+  <12_color>#000000</12_color>
+  <12_is_bold>FALSE</12_is_bold>
+  <12_is_toggle>FALSE</12_is_toggle>
+  <12_text_color>#000000</12_text_color>
+  <13_clear_on_release>FALSE</13_clear_on_release>
+  <13_color>#000000</13_color>
+  <13_is_bold>FALSE</13_is_bold>
+  <13_is_toggle>FALSE</13_is_toggle>
+  <13_text_color>#000000</13_text_color>
+  <14_clear_on_release>FALSE</14_clear_on_release>
+  <14_color>#000000</14_color>
+  <14_is_bold>FALSE</14_is_bold>
+  <14_is_toggle>FALSE</14_is_toggle>
+  <14_text_color>#000000</14_text_color>
+  <15_clear_on_release>FALSE</15_clear_on_release>
+  <15_color>#000000</15_color>
+  <15_is_bold>FALSE</15_is_bold>
+  <15_is_toggle>FALSE</15_is_toggle>
+  <15_text_color>#000000</15_text_color>
+  <16_clear_on_release>FALSE</16_clear_on_release>
+  <16_color>#000000</16_color>
+  <16_is_bold>FALSE</16_is_bold>
+  <16_is_toggle>FALSE</16_is_toggle>
+  <16_text_color>#000000</16_text_color>
+  <dialog_height>205</dialog_height>
+  <dialog_width>345</dialog_width>
+  <dialog_x>188</dialog_x>
+  <dialog_y>71</dialog_y>
+  <show_on_load>TRUE</show_on_load>
+</Button_Interface>
+<Comment>
+  <module_comment>.................................</module_comment>
+</Comment>
+<Comment>
+  <comment>
+</comment>
+  <module_comment>~ RESET BOT  ~
+</module_comment>
+</Comment>
+<If_Statement disabled>
+  <comparison_1>1</comparison_1>
+  <comparison_2>-1</comparison_2>
+  <comparison_3>-1</comparison_3>
+  <comparison_4>-1</comparison_4>
+  <comparison_5>-1</comparison_5>
+  <comparison_6>-1</comparison_6>
+  <comparison_type_1>3</comparison_type_1>
+  <comparison_type_2>-1</comparison_type_2>
+  <comparison_type_3>-1</comparison_type_3>
+  <comparison_type_4>-1</comparison_type_4>
+  <comparison_type_5>-1</comparison_type_5>
+  <comparison_type_6>-1</comparison_type_6>
+  <has_else>FALSE</has_else>
+  <is_latch>FALSE</is_latch>
+  <join_1>-1</join_1>
+  <join_2>-1</join_2>
+  <join_3>-1</join_3>
+  <join_4>-1</join_4>
+  <join_5>-1</join_5>
+  <value_1>1</value_1>
+  <variable_1>INTERFACE_RESET</variable_1>
+</If_Statement>
+<RGB_Filter>
+  <comment>filter out/diminish all pixels not of the selected colour, in this case anything not green = black.</comment>
+  <channel>2</channel>
+  <hue_value>101</hue_value>
+  <hysteresis>47</hysteresis>
+  <max_value>50</max_value>
+  <min_value>68</min_value>
+  <result_type>2</result_type>
+</RGB_Filter>
+<Blob_Filter>
+  <comment>removes blobs not of initial set blob [size] in this case. Can be colour, brightness etc.</comment>
+  <create_blob_array_variable>TRUE</create_blob_array_variable>
+  <filters>
+    <tab>
+      <filter>
+        <count_threshold>0</count_threshold>
+        <create_array>0</create_array>
+        <filter_id>34</filter_id>
+        <invert_count>0</invert_count>
+        <invert_threshold>0</invert_threshold>
+        <weight_threshold>0</weight_threshold>
+      </filter>
+    </tab>
+    <tab:2/>
+    <tab:3/>
+    <tab:4/>
+    <tab:5/>
+    <tab:6/>
+  </filters>
+  <font_size>Tiny (6pt)</font_size>
+  <largest_is_background>FALSE</largest_is_background>
+  <show_weights>FALSE</show_weights>
+  <sort_array_on_x>FALSE</sort_array_on_x>
+  <sort_array_on_y>FALSE</sort_array_on_y>
+</Blob_Filter>
+<Dilate>
+  <avoid_connection>FALSE</avoid_connection>
+  <count>12</count>
+  <dilate_borders>FALSE</dilate_borders>
+  <kernal_shape>4</kernal_shape>
+</Dilate>
+<Erode>
+  <comment>use to remove noise.</comment>
+  <count>11</count>
+  <erode_borders>TRUE</erode_borders>
+  <no_removal>FALSE</no_removal>
+</Erode>
+<Fill>
+  <comment>fills any holes in the current image.</comment>
+  <check_border>FALSE</check_border>
+  <fill_with_average_color>FALSE</fill_with_average_color>
+  <four_pixel_connectivity>FALSE</four_pixel_connectivity>
+  <size>1</size>
+</Fill>
+<Colorize>
+  <comment>change colour of all non-black pixels.</comment>
+  <rgb>#008000</rgb>
+</Colorize>
+<Geometric_Statistics>
+  <comment>statistic variables centered around image geometry.</comment>
+  <basic_statistics>FALSE</basic_statistics>
+</Geometric_Statistics>
+<Set_Variable>
+  <comment>sets current angle &amp; position</comment>
+  <set_1_array>0</set_1_array>
+  <set_1_once>0</set_1_once>
+  <set_2_array>0</set_2_array>
+  <set_2_once>0</set_2_once>
+  <set_3_array>0</set_3_array>
+  <set_3_once>0</set_3_once>
+  <set_4_array>0</set_4_array>
+  <set_4_once>1</set_4_once>
+  <set_5_array>0</set_5_array>
+  <set_5_once>1</set_5_once>
+  <set_6_array>0</set_6_array>
+  <set_6_once>1</set_6_once>
+  <set_7_array>0</set_7_array>
+  <set_7_once>1</set_7_once>
+  <set_8_array>0</set_8_array>
+  <set_8_once>1</set_8_once>
+  <set_9_array>0</set_9_array>
+  <set_9_once>1</set_9_once>
+  <set_10_array>0</set_10_array>
+  <set_10_once>1</set_10_once>
+  <set_11_array>0</set_11_array>
+  <set_11_once>1</set_11_once>
+  <set_12_array>0</set_12_array>
+  <set_12_once>1</set_12_once>
+  <set_13_array>0</set_13_array>
+  <set_13_once>1</set_13_once>
+  <set_14_array>0</set_14_array>
+  <set_14_once>1</set_14_once>
+  <set_15_array>0</set_15_array>
+  <set_15_once>1</set_15_once>
+  <set_16_array>0</set_16_array>
+  <set_16_once>0</set_16_once>
+  <value_1>[angle]</value_1>
+  <value_2>[blobs:0]</value_2>
+  <value_3>[blobs:1]</value_3>
+  <value_4/>
+  <value_5/>
+  <value_6/>
+  <value_7/>
+  <value_8/>
+  <value_9/>
+  <value_10/>
+  <value_11/>
+  <value_12/>
+  <value_13/>
+  <value_14/>
+  <value_15/>
+  <value_16/>
+  <variable_1>robot_orientation</variable_1>
+  <variable_2>robot_x</variable_2>
+  <variable_3>robot_y</variable_3>
+  <variable_4/>
+  <variable_5/>
+  <variable_6/>
+  <variable_7/>
+  <variable_8/>
+  <variable_9/>
+  <variable_10/>
+  <variable_11/>
+  <variable_12/>
+  <variable_13/>
+  <variable_14/>
+  <variable_15/>
+  <variable_16/>
+</Set_Variable>
+<Display_Variables>
+  <comment>Displays the current angle of the bot &amp; its (x,y) coords
+</comment>
+  <border_color>green</border_color>
+  <dim_background>TRUE</dim_background>
+  <display_as_annotation>FALSE</display_as_annotation>
+  <display_value_only>FALSE</display_value_only>
+  <font_color>white</font_color>
+  <font_size>Large (12pt)</font_size>
+  <northwest>BLOBS
+robot_orientation
+</northwest>
+</Display_Variables>
+<Marker>
+  <include_graphics>0</include_graphics>
+  <name>reset to source</name>
+  <revert_to>Source</revert_to>
+</Marker>
+<end_if/>
+<Comment>
+  <module_comment>-----------------------------------------------------------------------------------------------------------------------</module_comment>
+</Comment>
+<Comment>
+  <module_comment>.................................</module_comment>
+</Comment>
+<Comment>
+  <comment>Test with red cone.</comment>
+  <module_comment>&lt;- PERSON -&gt; 
+</module_comment>
+</Comment>
+<RGB_Filter>
+  <comment>identifies the red cones, i.e. anything not red = black.</comment>
+  <channel>1</channel>
+  <hue_value>176</hue_value>
+  <hysteresis>81</hysteresis>
+  <max_value>65</max_value>
+  <min_value>100</min_value>
+  <result_type>1</result_type>
+</RGB_Filter>
+<Dilate>
+  <avoid_connection>FALSE</avoid_connection>
+  <count>23</count>
+  <dilate_borders>FALSE</dilate_borders>
+  <kernal_shape>4</kernal_shape>
+</Dilate>
+<Erode>
+  <count>29</count>
+  <erode_borders>FALSE</erode_borders>
+  <kernal_shape>4</kernal_shape>
+  <no_removal>FALSE</no_removal>
+  <remove_count>0</remove_count>
+</Erode>
+<Blob_Filter>
+  <comment>removes any red blobs that are smaller than the red cones.</comment>
+  <create_blob_array_variable>TRUE</create_blob_array_variable>
+  <filters>
+    <tab>
+      <filter>
+        <count_threshold>4</count_threshold>
+        <create_array>0</create_array>
+        <filter_id>21</filter_id>
+        <invert_count>0</invert_count>
+        <invert_threshold>0</invert_threshold>
+        <weight_threshold>0.00000</weight_threshold>
+      </filter>
+    </tab>
+    <tab:2/>
+    <tab:3/>
+    <tab:4/>
+    <tab:5/>
+    <tab:6/>
+  </filters>
+  <font_size>Tiny (6pt)</font_size>
+  <largest_is_background>FALSE</largest_is_background>
+  <show_mode>-842150451</show_mode>
+  <show_weights>FALSE</show_weights>
+  <sort_array_on_x>FALSE</sort_array_on_x>
+  <sort_array_on_y>FALSE</sort_array_on_y>
+</Blob_Filter>
+<Set_Variable>
+  <comment>sets 'runner' as waypoint on red point, in this case cone, i.e. red blobs.</comment>
+  <set_1_array>0</set_1_array>
+  <set_1_once>0</set_1_once>
+  <set_2_array>0</set_2_array>
+  <set_2_once>0</set_2_once>
+  <set_3_array>0</set_3_array>
+  <set_3_once>0</set_3_once>
+  <set_4_array>0</set_4_array>
+  <set_4_once>0</set_4_once>
+  <set_5_array>0</set_5_array>
+  <set_5_once>0</set_5_once>
+  <set_6_array>0</set_6_array>
+  <set_6_once>0</set_6_once>
+  <set_7_array>0</set_7_array>
+  <set_7_once>0</set_7_once>
+  <set_8_array>0</set_8_array>
+  <set_8_once>0</set_8_once>
+  <set_9_array>0</set_9_array>
+  <set_9_once>0</set_9_once>
+  <set_10_array>0</set_10_array>
+  <set_10_once>0</set_10_once>
+  <set_11_array>0</set_11_array>
+  <set_11_once>0</set_11_once>
+  <set_12_array>0</set_12_array>
+  <set_12_once>0</set_12_once>
+  <set_13_array>0</set_13_array>
+  <set_13_once>0</set_13_once>
+  <set_14_array>0</set_14_array>
+  <set_14_once>0</set_14_once>
+  <set_15_array>0</set_15_array>
+  <set_15_once>0</set_15_once>
+  <set_16_array>0</set_16_array>
+  <set_16_once>0</set_16_once>
+  <value_1>[blobs:0]</value_1>
+  <value_2>[blobs:1]</value_2>
+  <value_3/>
+  <value_4/>
+  <value_5/>
+  <value_6/>
+  <value_7/>
+  <value_8/>
+  <value_9/>
+  <value_10/>
+  <value_11/>
+  <value_12/>
+  <value_13/>
+  <value_14/>
+  <value_15/>
+  <value_16/>
+  <variable_1>person_x</variable_1>
+  <variable_2>person_y</variable_2>
+  <variable_3/>
+  <variable_4/>
+  <variable_5/>
+  <variable_6/>
+  <variable_7/>
+  <variable_8/>
+  <variable_9/>
+  <variable_10/>
+  <variable_11/>
+  <variable_12/>
+  <variable_13/>
+  <variable_14/>
+  <variable_15/>
+  <variable_16/>
+</Set_Variable>
+<Display_Variables>
+  <border_color>red</border_color>
+  <dim_background>TRUE</dim_background>
+  <display_as_annotation>FALSE</display_as_annotation>
+  <display_value_only>FALSE</display_value_only>
+  <font_color>white</font_color>
+  <font_size>Large (12pt)</font_size>
+  <northwest>person_y
+person_x
+</northwest>
+</Display_Variables>
+<Geometric_Statistics>
+  <comment>statistic variables centered around image geometry.</comment>
+  <basic_statistics>FALSE</basic_statistics>
+</Geometric_Statistics>
+<Marker>
+  <include_graphics>0</include_graphics>
+  <name>Person position</name>
+  <revert_to>Source</revert_to>
+</Marker>
+<Comment>
+  <module_comment>.................................</module_comment>
+</Comment>
+<Comment>
+  <comment>blue colour to destinguish the box</comment>
+  <module_comment>&lt;- BOX WAYPOINT -&gt;
+</module_comment>
+</Comment>
+<RGB_Filter>
+  <comment>identifies the box (with blue), i.e. anything not blue = black.</comment>
+  <channel>4</channel>
+  <hue_value>113</hue_value>
+  <hysteresis>88</hysteresis>
+  <max_value>65</max_value>
+  <min_value>97</min_value>
+  <result_type>1</result_type>
+</RGB_Filter>
+<Dilate>
+  <avoid_connection>FALSE</avoid_connection>
+  <count>7</count>
+  <dilate_borders>FALSE</dilate_borders>
+  <kernal_shape>4</kernal_shape>
+</Dilate>
+<Erode>
+  <comment>removes the blue noise.
+</comment>
+  <count>0</count>
+  <erode_borders>TRUE</erode_borders>
+  <no_removal>FALSE</no_removal>
+</Erode>
+<Blob_Filter>
+  <comment>removes any blue blobs that are smaller than the blue area on box.</comment>
+  <create_blob_array_variable>TRUE</create_blob_array_variable>
+  <filters>
+    <tab>
+      <filter>
+        <count_threshold>4</count_threshold>
+        <create_array>0</create_array>
+        <filter_id>21</filter_id>
+        <invert_count>0</invert_count>
+        <invert_threshold>0</invert_threshold>
+        <weight_threshold>0.00000</weight_threshold>
+      </filter>
+    </tab>
+    <tab:2/>
+    <tab:3/>
+    <tab:4/>
+    <tab:5/>
+    <tab:6/>
+  </filters>
+  <font_size>Tiny (6pt)</font_size>
+  <largest_is_background>FALSE</largest_is_background>
+  <show_mode>-842150451</show_mode>
+  <show_weights>FALSE</show_weights>
+  <sort_array_on_x>FALSE</sort_array_on_x>
+  <sort_array_on_y>FALSE</sort_array_on_y>
+</Blob_Filter>
+<Set_Variable>
+  <comment>sets 'box' as waypoint on blue blob.</comment>
+  <set_1_array>0</set_1_array>
+  <set_1_once>0</set_1_once>
+  <set_2_array>0</set_2_array>
+  <set_2_once>0</set_2_once>
+  <set_3_array>0</set_3_array>
+  <set_3_once>0</set_3_once>
+  <set_4_array>0</set_4_array>
+  <set_4_once>0</set_4_once>
+  <set_5_array>0</set_5_array>
+  <set_5_once>0</set_5_once>
+  <set_6_array>0</set_6_array>
+  <set_6_once>0</set_6_once>
+  <set_7_array>0</set_7_array>
+  <set_7_once>0</set_7_once>
+  <set_8_array>0</set_8_array>
+  <set_8_once>0</set_8_once>
+  <set_9_array>0</set_9_array>
+  <set_9_once>0</set_9_once>
+  <set_10_array>0</set_10_array>
+  <set_10_once>0</set_10_once>
+  <set_11_array>0</set_11_array>
+  <set_11_once>0</set_11_once>
+  <set_12_array>0</set_12_array>
+  <set_12_once>0</set_12_once>
+  <set_13_array>0</set_13_array>
+  <set_13_once>0</set_13_once>
+  <set_14_array>0</set_14_array>
+  <set_14_once>0</set_14_once>
+  <set_15_array>0</set_15_array>
+  <set_15_once>0</set_15_once>
+  <set_16_array>0</set_16_array>
+  <set_16_once>0</set_16_once>
+  <value_1>[blobs:0]</value_1>
+  <value_2>[blobs:1]</value_2>
+  <value_3>[angle]</value_3>
+  <value_4/>
+  <value_5/>
+  <value_6/>
+  <value_7/>
+  <value_8/>
+  <value_9/>
+  <value_10/>
+  <value_11/>
+  <value_12/>
+  <value_13/>
+  <value_14/>
+  <value_15/>
+  <value_16/>
+  <variable_1>box_x</variable_1>
+  <variable_2>box_y</variable_2>
+  <variable_3>box_orientation</variable_3>
+  <variable_4/>
+  <variable_5/>
+  <variable_6/>
+  <variable_7/>
+  <variable_8/>
+  <variable_9/>
+  <variable_10/>
+  <variable_11/>
+  <variable_12/>
+  <variable_13/>
+  <variable_14/>
+  <variable_15/>
+  <variable_16/>
+</Set_Variable>
+<Display_Variables>
+  <border_color>blue</border_color>
+  <dim_background>TRUE</dim_background>
+  <display_as_annotation>FALSE</display_as_annotation>
+  <display_value_only>FALSE</display_value_only>
+  <font_color>white</font_color>
+  <font_size>Large (12pt)</font_size>
+  <northwest>box_y
+box_x
+box_orientation
+</northwest>
+</Display_Variables>
+<Marker>
+  <include_graphics>0</include_graphics>
+  <name>Box position</name>
+  <revert_to>Source</revert_to>
+</Marker>
+<Comment>
+  <module_comment>.................................</module_comment>
+</Comment>
+<Display_Line>
+  <clear_image>0</clear_image>
+  <color_index>white</color_index>
+  <display_as_annotation>1</display_as_annotation>
+  <display_mode_index>1</display_mode_index>
+  <thickness>5</thickness>
+  <xy_list_map/>
+  <x_end>200</x_end>
+  <x_end_map>box_x</x_end_map>
+  <x_start>100</x_start>
+  <x_start_map>person_x</x_start_map>
+  <y_end>100</y_end>
+  <y_end_map>box_y</y_end_map>
+  <y_start>100</y_start>
+  <y_start_map>person_y</y_start_map>
+</Display_Line>
+<Display_Line>
+  <clear_image>0</clear_image>
+  <color_index>red</color_index>
+  <display_as_annotation>1</display_as_annotation>
+  <display_mode_index>1</display_mode_index>
+  <thickness>5</thickness>
+  <xy_list_map/>
+  <x_end>200</x_end>
+  <x_end_map>followpointX</x_end_map>
+  <x_start>100</x_start>
+  <x_start_map>box_x</x_start_map>
+  <y_end>100</y_end>
+  <y_end_map>followpointY</y_end_map>
+  <y_start>100</y_start>
+  <y_start_map>box_y</y_start_map>
+</Display_Line>
+<Display_Line>
+  <clear_image>0</clear_image>
+  <color_index>white</color_index>
+  <display_as_annotation>1</display_as_annotation>
+  <display_mode_index>1</display_mode_index>
+  <thickness>1</thickness>
+  <xy_list_map/>
+  <x_end>200</x_end>
+  <x_end_map>followpointX</x_end_map>
+  <x_start>100</x_start>
+  <x_start_map>robot_x</x_start_map>
+  <y_end>100</y_end>
+  <y_end_map>followpointY</y_end_map>
+  <y_start>100</y_start>
+  <y_start_map>robot_y</y_start_map>
+</Display_Line>
+<Comment>
+  <module_comment>-----------------------------------------------------------------------------------------------------------------------</module_comment>
+</Comment>
+<Math>
+  <all_channels>TRUE</all_channels>
+  <bias>0</bias>
+  <divisor>1</divisor>
+  <function>1</function>
+  <image1>Current</image1>
+  <image2>reset to source</image2>
+  <image_1_channel>2</image_1_channel>
+  <image_2_channel>2</image_2_channel>
+</Math>
+<VBScript_Program>
+  <comment>initialising movement &amp; speed of robot.</comment>
+  <auto_reload>FALSE</auto_reload>
+  <continue_on_errors>FALSE</continue_on_errors>
+  <script>' define some constants to use for speed. Note that the boe-bot
+' moves forward with left and right being opposite numbers (due
+' to the flipping of the servos as part of the robot construction
+'-----------------------------------------------------------------------------------------------
+left_speed = 160
+right_speed = 160
+rev_left_speed = 90
+rev_right_speed = 90
+left_stopped = 128
+right_stopped = 130
+'-----------------------------------------------------------------------------------------------
+
+'''' Get Box (x,y) and Person (x,y) values '''''''
+		boxX = GetFloatVariable("box_x")
+		boxY = GetFloatVariable("box_y")
+		
+		personX = GetFloatVariable("person_x")
+		personY = GetFloatVariable("person_y")
+		
+		robotX = GetFloatVariable("robot_x")
+		robotY = GetFloatVariable("robot_y")
+		
+		'------------------------------------------------'
+		
+		'''' Using the midpoint formula ''''
+		'' Step:1 ''
+		'(followpoint_x + personX)/2 = boxX
+		'(followpoint_y + personY)/2 = boxY
+		
+		'' Step:2 - Simplified'' 
+		'followpoint_x + personX = 2*boxX 
+		'followpoint_y + personY = 2*boxY
+
+		'' Step:3 - final form, simplified:''
+		followpoint_x = (2*boxX) - (personX)
+		followpoint_y = (2*boxY) - (personY)
+		
+		SetVariable "followpointX", followpoint_x
+		SetVariable "followpointY", followpoint_y
+		
+		
+		''' Length of white line vector, i.e between person &amp; box '''
+		WL_length = Sqr((Abs(boxX - personX) ^ 2) + (Abs(boxY - personY) ^ 2))
+		setVariable "Whiteline_Length", WL_length
+		
+		followpointx = GetFloatVariable("followpointX")
+		followpointy = GetFloatVariable("followpointY")
+		
+		''' Length of orange line vector, i.e between bot &amp; followpoint '''
+		WLT_length = Sqr((Abs(robotX - followpointx) ^ 2) + (Abs(robotY - followpointy) ^ 2))	
+		setVariable "WhiteLineThin_Length", WLT_length
+		
+		
+'----------------------------------------------------------------------------------------
+' check to see if we are running.
+' &lt;&gt; means NOT
+'----------------------------------------------------------------------------------------
+
+			' this is the orientation produced by the path_planning and the
+			' orientation we want the robot to be at
+			desiredOrientation = GetVariable("plan_orientation")
+
+if GetVariable("interface_run") &lt;&gt; "1" or desiredOrientation = "-1" then
+
+   SetVariable "left_motor", left_stopped
+   SetVariable "right_motor", right_stopped
+									
+else
+		'get the current robot orientation
+			robotOrientation = GetVariable("robot_orientation")
+			
+		' 40 degree line-up
+		robotOrientation = CInt((robotOrientation / 40) ) * 40
+		desiredOrientation = CInt((desiredOrientation / 40) ) * 40
+		
+		' calculate the different between the two angles
+		diff = abs(desiredOrientation - robotOrientation )
+		
+		' if they are the same (within 40 degrees) just move forward
+if desiredOrientation = robotOrientation then
+
+  SetVariable "left_motor", left_speed
+  SetVariable "right_motor", right_speed
+
+	' otherwise turn in the appropriate direction. Note the use of 180 testing to determine which turn direction would be fastest.
+	' This allows the robot to turn in the most efficient direction
+elseif desiredOrientation &gt; robotOrientation and diff &lt; 180 or _
+  desiredOrientation &lt; robotOrientation and diff &gt;= 180 then
+
+  SetVariable "left_motor", rev_left_speed
+  SetVariable "right_motor", right_speed
+
+else
+
+  ' if we don't turn one way then default to the other
+  SetVariable "left_motor", left_speed
+  SetVariable "right_motor", rev_right_speed
+
+end if
+
+end if ' interface_pause
+
+'-----------------------------------------------------------------------------------------		
+
+' variables left_motor and right_motor now contain the motor
+' movements.
+'-------------------------------------------------------------------------------------------
+
+</script>
+  <source_mode>gui</source_mode>
+</VBScript_Program>
+<Path_Planning>
+  <comment>point (followpoint) for robot to follow</comment>
+  <destination_x>[followpointX]</destination_x>
+  <destination_y>[followpointY]</destination_y>
+  <overlay_image>Source</overlay_image>
+  <reset_trigger_variable>interface_reset</reset_trigger_variable>
+  <reset_waypoints_on_destination>FALSE</reset_waypoints_on_destination>
+  <robot_color>2</robot_color>
+  <robot_x>[robot_x]</robot_x>
+  <robot_y>[robot_y]</robot_y>
+  <route_color>3</route_color>
+  <visited_waypoint_color>7</visited_waypoint_color>
+  <waypoint_color>3</waypoint_color>
+  <waypoint_removal_distance>9</waypoint_removal_distance>
+</Path_Planning>
+<Display_Variables>
+  <border_color>gray</border_color>
+  <dim_background>TRUE</dim_background>
+  <display_as_annotation>FALSE</display_as_annotation>
+  <display_value_only>FALSE</display_value_only>
+  <east>right_motor
+</east>
+  <font_color>white</font_color>
+  <font_size>Large (12pt)</font_size>
+  <north>box_x
+box_y
+</north>
+  <northeast>followpointX
+followpointY
+</northeast>
+  <northwest>person_x
+person_y
+</northwest>
+  <south>robot_orientation
+</south>
+  <southeast>Front Right
+Back Right
+</southeast>
+  <southwest>Front Left
+Back Left
+</southwest>
+  <west>left_motor
+</west>
+</Display_Variables>
+<Set_Variable>
+  <comment>sets current angle &amp; position</comment>
+  <set_1_array>0</set_1_array>
+  <set_1_once>0</set_1_once>
+  <set_2_array>0</set_2_array>
+  <set_2_once>0</set_2_once>
+  <set_3_array>0</set_3_array>
+  <set_3_once>0</set_3_once>
+  <set_4_array>0</set_4_array>
+  <set_4_once>1</set_4_once>
+  <set_5_array>0</set_5_array>
+  <set_5_once>1</set_5_once>
+  <set_6_array>0</set_6_array>
+  <set_6_once>1</set_6_once>
+  <set_7_array>0</set_7_array>
+  <set_7_once>1</set_7_once>
+  <set_8_array>0</set_8_array>
+  <set_8_once>1</set_8_once>
+  <set_9_array>0</set_9_array>
+  <set_9_once>1</set_9_once>
+  <set_10_array>0</set_10_array>
+  <set_10_once>1</set_10_once>
+  <set_11_array>0</set_11_array>
+  <set_11_once>1</set_11_once>
+  <set_12_array>0</set_12_array>
+  <set_12_once>1</set_12_once>
+  <set_13_array>0</set_13_array>
+  <set_13_once>0</set_13_once>
+  <set_14_array>0</set_14_array>
+  <set_14_once>0</set_14_once>
+  <set_15_array>0</set_15_array>
+  <set_15_once>0</set_15_once>
+  <set_16_array>0</set_16_array>
+  <set_16_once>0</set_16_once>
+  <value_1>0</value_1>
+  <value_2>0</value_2>
+  <value_3>0</value_3>
+  <value_4>0</value_4>
+  <value_5>0</value_5>
+  <value_6>0</value_6>
+  <value_7>0</value_7>
+  <value_8>0</value_8>
+  <value_9>0</value_9>
+  <value_10>0</value_10>
+  <value_11>0</value_11>
+  <value_12>0</value_12>
+  <value_13/>
+  <value_14/>
+  <value_15/>
+  <value_16/>
+  <variable_1>address1</variable_1>
+  <variable_2>address2</variable_2>
+  <variable_3>address3</variable_3>
+  <variable_4>address4</variable_4>
+  <variable_5>data1</variable_5>
+  <variable_6>data2</variable_6>
+  <variable_7>data3</variable_7>
+  <variable_8>data4</variable_8>
+  <variable_9>data5</variable_9>
+  <variable_10>data6</variable_10>
+  <variable_11>data7</variable_11>
+  <variable_12>data8</variable_12>
+  <variable_13/>
+  <variable_14/>
+  <variable_15/>
+  <variable_16/>
+</Set_Variable>
+<Set_Variable>
+  <set_1_array>0</set_1_array>
+  <set_1_once>0</set_1_once>
+  <set_2_array>0</set_2_array>
+  <set_2_once>0</set_2_once>
+  <set_3_array>0</set_3_array>
+  <set_3_once>0</set_3_once>
+  <set_4_array>0</set_4_array>
+  <set_4_once>0</set_4_once>
+  <set_5_array>0</set_5_array>
+  <set_5_once>0</set_5_once>
+  <set_6_array>0</set_6_array>
+  <set_6_once>0</set_6_once>
+  <set_7_array>0</set_7_array>
+  <set_7_once>0</set_7_once>
+  <set_8_array>0</set_8_array>
+  <set_8_once>0</set_8_once>
+  <set_9_array>0</set_9_array>
+  <set_9_once>0</set_9_once>
+  <set_10_array>0</set_10_array>
+  <set_10_once>0</set_10_once>
+  <set_11_array>0</set_11_array>
+  <set_11_once>0</set_11_once>
+  <set_12_array>0</set_12_array>
+  <set_12_once>0</set_12_once>
+  <set_13_array>0</set_13_array>
+  <set_13_once>0</set_13_once>
+  <set_14_array>0</set_14_array>
+  <set_14_once>0</set_14_once>
+  <set_15_array>0</set_15_array>
+  <set_15_once>0</set_15_once>
+  <set_16_array>0</set_16_array>
+  <set_16_once>0</set_16_once>
+  <value_1>[data3]</value_1>
+  <value_2>[data5]</value_2>
+  <value_3>[data6]</value_3>
+  <value_4>[data7]</value_4>
+  <value_5>[data8]</value_5>
+  <value_6/>
+  <value_7/>
+  <value_8/>
+  <value_9/>
+  <value_10/>
+  <value_11/>
+  <value_12/>
+  <value_13/>
+  <value_14/>
+  <value_15/>
+  <value_16/>
+  <variable_1>POT</variable_1>
+  <variable_2>Front Left</variable_2>
+  <variable_3>Front Right</variable_3>
+  <variable_4>Back Left</variable_4>
+  <variable_5>Back Right</variable_5>
+  <variable_6/>
+  <variable_7/>
+  <variable_8/>
+  <variable_9/>
+  <variable_10/>
+  <variable_11/>
+  <variable_12/>
+  <variable_13/>
+  <variable_14/>
+  <variable_15/>
+  <variable_16/>
+</Set_Variable>
+<Watch_Variables>
+  <on_top>FALSE</on_top>
+</Watch_Variables>
+<Serial>
+  <baud>6</baud>
+  <data_bits>7</data_bits>
+  <enable_send_sequence>TRUE</enable_send_sequence>
+  <flow_control_cts>FALSE</flow_control_cts>
+  <flow_control_dsr>FALSE</flow_control_dsr>
+  <flow_control_in_x>FALSE</flow_control_in_x>
+  <flow_control_out_x>FALSE</flow_control_out_x>
+  <message_timeout>100</message_timeout>
+  <port>COM4 - Standard Serial over Bluetooth link</port>
+  <receive>cad: 74 [address2] [address3] [address4]cmd: [data1] [data2] [data3] [data4] [data5] [data6] [data7] [data8]</receive>
+  <remember_as_default>TRUE</remember_as_default>
+  <send>cad:80 &lt;cr&gt;&lt;cr&gt;
+cd0:[right_motor]&lt;cr&gt;&lt;cr&gt;
+cds:&lt;cr&gt;&lt;cr&gt;
+cd1:[left_motor] &lt;cr&gt;&lt;cr&gt;
+cds: &lt;cr&gt;&lt;cr&gt;
+</send>
+  <send_frequency_index>3</send_frequency_index>
+  <send_only_on_change>FALSE</send_only_on_change>
+  <timeout>5000</timeout>
+  <wait_for_reply>FALSE</wait_for_reply>
+</Serial>
